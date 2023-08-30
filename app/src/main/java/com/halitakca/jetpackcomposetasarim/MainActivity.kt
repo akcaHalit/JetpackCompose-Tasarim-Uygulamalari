@@ -6,12 +6,11 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,10 +29,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetpackComposeTasarimTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
+                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
                     Sayfa()
                 }
             }
@@ -41,6 +37,54 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable
+fun Sayfa(){
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.primary) {
+
+        val tfKullaniciAdi = remember { mutableStateOf("") }
+        val tfSifre = remember { mutableStateOf("") }
+
+        Column(modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Image(painter = painterResource(id = R.drawable.logo), contentDescription = "")
+            TextField(
+                value = tfKullaniciAdi.value,
+                onValueChange = {tfKullaniciAdi.value = it},
+                label = { Text(text = "Kullanıcı Adı: ")},
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    textColor = Color.Black,
+                    focusedIndicatorColor = Color.Red
+                )
+            )
+
+            TextField(
+                value = tfSifre.value,
+                onValueChange = {tfSifre.value = it},
+                label = { Text(text = "Şifre: ")},
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    textColor = Color.Black,
+                    focusedIndicatorColor = Color.Red
+                )
+            )
+            
+            Button(onClick = { Log.e("Giriş", "${tfKullaniciAdi.value}-${tfSifre.value} giriş yaptı") },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Red,
+                contentColor = Color.White
+            ),
+            modifier = Modifier.size(250.dp,50.dp)) {
+                Text(text = "Giriş Yap")
+            }
+
+        }
+    }
+}
+
+/*          İLHAM VER
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun Sayfa(){
@@ -81,7 +125,7 @@ fun Sayfa(){
         }
     )
 }
-
+ */
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
