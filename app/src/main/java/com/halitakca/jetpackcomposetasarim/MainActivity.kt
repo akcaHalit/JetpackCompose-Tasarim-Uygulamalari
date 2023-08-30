@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +37,63 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun Sayfa(){
+    Scaffold(
+        topBar = {
+            TopAppBar(title ={
+                Text(text = "Yemek Tarifi") },
+                backgroundColor = colorResource(id = R.color.anaRenkTuruncu),
+                contentColor = colorResource(id = R.color.black)
+            )
+        },
+        content = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
+                Image(painter = painterResource(id = R.drawable.yemekresim), contentDescription = "")
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Button(
+                        onClick = { Log.e("Beğen Button", "Beğen Butonu tıklandı") },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = colorResource(id = R.color.anaRenkTuruncu),
+                        ),
+                        modifier = Modifier.weight(50f)
+                    ) {
+                        Text("BEĞEN")
+                    }
+                    Button(onClick = { Log.e("Yorum Yap Button", "Yorum Butonu tıklandı") },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = colorResource(id = R.color.alternatifRenk),
+                        ),
+                        modifier = Modifier.weight(50f)
+                    ) {
+                        Text("YORUM YAP")
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)) {
+                    Text(text = "Köfte", color = colorResource(id = R.color.alternatifRenk), fontSize = 18.sp)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ){
+                        Text(text = "Izgaraya Uygun")
+                        Text(text = "7 Haziran")
+                    }
+                }
+                Text(text = "Köfte harcını hazırlamak için, soğanları rendeleyin ve maydonozları ince ince kıyın. İsterseniz bir diş sarımsak da ekleyebilirsiniz.",
+                    modifier = Modifier.padding(10.dp),
+                    textAlign = TextAlign.Center)
+            }
+        }
+    )
+}
+
+/*          Login Uygulaması
 
 @Composable
 fun Sayfa(){
@@ -70,7 +128,7 @@ fun Sayfa(){
                     focusedIndicatorColor = Color.Red
                 )
             )
-            
+
             Button(onClick = { Log.e("Giriş", "${tfKullaniciAdi.value}-${tfSifre.value} giriş yaptı") },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Red,
@@ -83,6 +141,8 @@ fun Sayfa(){
         }
     }
 }
+
+*/
 
 /*          İLHAM VER
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

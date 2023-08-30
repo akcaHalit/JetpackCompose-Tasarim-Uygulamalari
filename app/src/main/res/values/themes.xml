@@ -2,6 +2,6 @@
 <resources>
 
     <style name="Theme.JetpackComposeTasarim" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/anaRenkKoyu</item>
+        <item name="android:statusBarColor">@color/anaRenkKoyuTuruncu</item>
     </style>
 </resources>
