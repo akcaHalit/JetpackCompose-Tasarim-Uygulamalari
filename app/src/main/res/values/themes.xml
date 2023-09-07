@@ -2,6 +2,7 @@
 <resources>
 
     <style name="Theme.JetpackComposeTasarim" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/anaRenkKoyuTuruncu</item>
+        <!-- <item name="android:statusBarColor">@color/anaRenkKoyuTuruncu</item> -->
+        <item name="android:statusBarColor">@color/purple_500</item>
     </style>
 </resources>
