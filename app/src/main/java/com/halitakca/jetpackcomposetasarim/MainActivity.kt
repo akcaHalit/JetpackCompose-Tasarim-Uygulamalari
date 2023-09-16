@@ -1,6 +1,194 @@
 package com.halitakca.jetpackcomposetasarim
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Im
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.rememberNavController
+import com.halitakca.jetpackcomposetasarim.entity.Foods
+import com.halitakca.jetpackcomposetasarim.sayitahminapp.SonucEkrani
+import com.halitakca.jetpackcomposetasarim.sayitahminapp.TahminEkrani
+import com.halitakca.jetpackcomposetasarim.ui.theme.JetpackComposeTasarimTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            JetpackComposeTasarimTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+                    SayfaGecisleri()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SayfaGecisleri(){
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "anasayfa"){
+        composable("anasayfa"){
+            AnaSayfa(navController = navController)
+        }
+        composable("tahmin_ekrani"){
+            TahminEkrani(navController = navController)
+        }
+        composable("sonuc_ekrani/{sonuc}", arguments = listOf(
+            navArgument("sonuc"){type = NavType.BoolType}
+        )){
+            val sonuc = it.arguments?.getBoolean("sonuc")!!
+            SonucEkrani(navController = navController, sonuc = sonuc)
+
+        }
+    }
+}
+@Composable
+fun AnaSayfa(navController: NavController){
+    Column(modifier = Modifier.fillMaxSize(),
+    verticalArrangement = Arrangement.SpaceEvenly,
+    horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = "TAHMİN ET", fontSize = 36.sp)
+        Image(painter = painterResource(id = R.drawable.zar_resim), contentDescription = "")
+        Button(onClick = {
+            navController.navigate("tahmin_ekrani")
+        }, modifier = Modifier.size(250.dp,50.dp)) {
+            Text(text = "OYUNA BAŞLA")
+        }
+    }
+}
+
+
+
+
+
+
+/*
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun TestPage(){
+
+    Scaffold(
+        topBar = {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .size(50.dp)
+                .background(color = Color.LightGray),
+            horizontalArrangement = Arrangement.SpaceBetween){
+                Text(text = "Halit AKCA",modifier = Modifier.padding(5.dp), color = Color.Black)
+                Text(text = "AAAAAAAAA", modifier = Modifier.padding(5.dp), color = Color.Black)
+                Text(text = "BBBBBBBBB",modifier = Modifier.padding(5.dp), color = Color.Black)
+            }
+        },
+        content = {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.Magenta)
+            ) {
+                Spacer(modifier = Modifier.fillMaxWidth().size(10.dp))
+                Image(painter = painterResource(id = R.drawable.logo), contentDescription = "", modifier = Modifier.fillMaxWidth())
+            }
+        }
+    )
+}
+ */
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun HomePage(){
+    val foodList = remember { mutableStateListOf<Foods>() }
+    
+    LaunchedEffect(key1 = true){
+        val y1 = Foods(1,"Köfte","kofte",15)
+        val y2 = Foods(2,"Ayran","ayran",2)
+        val y3 = Foods(3,"Fanta","fanta",3)
+        val y4 = Foods(4,"Makarna","makarna",14)
+        val y5 = Foods(5,"Kadayıf","kafayıf",8)
+        val y6 = Foods(6,"Baklava","baklava",15)
+
+        foodList.add(y1)
+        foodList.add(y2)
+        foodList.add(y3)
+        foodList.add(y4)
+        foodList.add(y5)
+        foodList.add(y6)
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Foods")},
+                backgroundColor = colorResource(id = R.color.anaRenkTuruncu),
+                contentColor = Color.White
+            )
+        },
+        content = {
+            LazyColumn{
+                items(
+                    count = foodList.count(),
+                    itemContent = {
+                        val food = foodList[it]
+                        Card(modifier = Modifier
+                            .padding(5.dp)
+                            .fillMaxWidth()) {
+                            Row(modifier = Modifier.clickable {
+
+                            }) {
+                                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                                    .padding(10.dp)
+                                    .fillMaxWidth()) {
+                                    val activity = (LocalContext.current as Activity)
+                                    Image(bitmap = ImageBitmap.imageResource(id = activity.resources.getIdentifier(
+                                        food.food_image_name,"drawable",activity.packageName
+                                    ) ), contentDescription = "", modifier = Modifier.size(100.dp))
+                                }
+                            }
+                        }
+                    }
+                )
+            }
+        }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    JetpackComposeTasarimTheme {
+        SayfaGecisleri()
+    }
+}
+
+
+/*          Contacts App
+
+package com.halitakca.jetpackcomposetasarim
+
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -167,6 +355,8 @@ fun DefaultPreview() {
         SayfaGecisleri()
     }
 }
+
+ */
 
 
 /*
